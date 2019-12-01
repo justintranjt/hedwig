@@ -52,7 +52,7 @@ Download the Reuters, AAPD and IMDB datasets, along with word2vec embeddings fro
 [`hedwig-data`](https://git.uwaterloo.ca/jimmylin/hedwig-data).
 
 ```bash
-$ git clone https://github.com/castorini/hedwig.git
+$ git clone https://github.com/justintranjt/hedwig.git
 $ git clone https://git.uwaterloo.ca/jimmylin/hedwig-data.git
 ```
 
