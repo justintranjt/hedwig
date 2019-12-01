@@ -10,7 +10,20 @@ from torchtext.data import NestedField, Field, TabularDataset
 from torchtext.data.iterator import BucketIterator
 from torchtext.vocab import Vectors
 
-csv.field_size_limit(sys.maxsize)
+# csv.field_size_limit(sys.maxsize)
+# Circumvent "OverflowError: Python int too large to convert to C long" error on Windows Anaconda
+# https://stackoverflow.com/a/15063941/1713336
+maxInt = sys.maxsize
+
+while True:
+    # decrease the maxInt value by factor 10 
+    # as long as the OverflowError occurs.
+
+    try:
+        csv.field_size_limit(maxInt)
+        break
+    except OverflowError:
+        maxInt = int(maxInt/10)
 
 
 def clean_string(string):
