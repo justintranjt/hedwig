@@ -1,0 +1,44 @@
+Baseline LSTM-Reg results obtained from running the following command:
+python -m models.reg_lstm --dataset DATASET_NAME_HERE --mode static --batch-size 32 --lr 0.01 --epochs 30 --bidirectional --num-layers 1 --hidden-dim 512 --wdrop 0.1 --embed-droprate 0.2 --dropout 0.5 --beta-ema 0.99 --seed 3435
+
+---
+
+AAPD:
+Early Stopping. Epoch: 21, Best Dev F1: 0.6337801608579088
+Evaluation metrics for dev
+['accuracy', 'precision', 'recall', 'f1', 'cross_entropy_loss']
+[0.338, 0.8887218045112782, 0.4925, 0.6337801608579088, 4.049724966049195]
+Evaluation metrics for test
+['accuracy', 'precision', 'recall', 'f1', 'cross_entropy_loss']
+[0.301, 0.865414710485133, 0.45683601817430813, 0.5979994593133279, 4.273660335540772]
+
+---
+
+IMDB (very large dataset): Receive cuda runtime error running this
+
+---
+
+Reuters:
+Early Stopping. Epoch: 21, Best Dev F1: 0.8804920913884008
+Evaluation metrics for dev
+['accuracy', 'precision', 'recall', 'f1', 'cross_entropy_loss']
+[0.8208955223880597, 0.926490984743412, 0.8388447048974467, 0.8804920913884008, 1.1614612707205796]
+Evaluation metrics for test
+['accuracy', 'precision', 'recall', 'f1', 'cross_entropy_loss']
+[0.8078834051010269, 0.9272670999690499, 0.8002136752136753, 0.8590681003584231, 1.368040854969055]
+
+---
+
+SST-2: This dataset is not listed in the paper but is provided in hedwig-data.
+Early Stopping. Epoch: 13, Best Dev F1: 0.8451834862385322
+Evaluation metrics for dev
+['accuracy', 'precision', 'recall', 'f1', 'cross_entropy_loss']
+[0.8451834862385321, 0.8451834862385321, 0.8451834862385321, 0.8451834862385322, 0.43584572243581127]
+Evaluation metrics for test
+['accuracy', 'precision', 'recall', 'f1', 'cross_entropy_loss']
+[0.8308621636463481, 0.8308621636463481, 0.8308621636463481, 0.8308621636463481, 0.361538493718373]
+
+---
+
+Yelp2014:
+There is no Yelp dataset provided in hedwig-data even though it is listed in the paper.
