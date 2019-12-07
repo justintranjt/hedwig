@@ -3,7 +3,7 @@
 dataset="$1"
 
 if [[ -z "$dataset" ]]; then
-  echo "Usage: ./$0 <dataset>"
+  echo "Usage: $0 <dataset>"
   echo "Available datasets:"
   echo " - Reuters"
   echo " - AAPD"
