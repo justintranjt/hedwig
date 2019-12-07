@@ -21,6 +21,7 @@ if [[ "$dataset" == "Reuters" ]]; then
 
 elif [[ "$dataset" == "AAPD" ]]; then
   # Multilabel, 54 classes
+  true
 elif [[ "$dataset" == "IMDB" ]]; then
   # Single label, 10 classes
   BATCH=64
