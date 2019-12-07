@@ -4,13 +4,13 @@ python -m models.reg_lstm --dataset DATASET_NAME_HERE --mode static --batch-size
 ---
 
 AAPD:
-Early Stopping. Epoch: 21, Best Dev F1: 0.6337801608579088
+Early Stopping. Epoch: 23, Best Dev F1: 0.7280804302080899
 Evaluation metrics for dev
 ['accuracy', 'precision', 'recall', 'f1', 'cross_entropy_loss']
-[0.338, 0.8887218045112782, 0.4925, 0.6337801608579088, 4.049724966049195]
+[0.401, 0.8295151838039425, 0.64875, 0.7280804302080899, 3.4393811359405517]
 Evaluation metrics for test
 ['accuracy', 'precision', 'recall', 'f1', 'cross_entropy_loss']
-[0.301, 0.865414710485133, 0.45683601817430813, 0.5979994593133279, 4.273660335540772]
+[0.373, 0.8069148936170213, 0.6266005782734407, 0.7054173448035339, 3.6402577171325685]
 
 ---
 
