@@ -41,7 +41,7 @@ if [[ ! -d "logs" ]]; then
 fi
 
 # Loop over various embedding dropouts
-for  (( i = 0; i <= 0.5; i += 0.1 ))
+for i in $(seq 0 0.1 0.5)
 do
   now=$(date +%m%d%y-%H%M%S)
   logfile="logs/embed-droprate-$i-$now.txt"
