@@ -44,7 +44,7 @@ fi
 for i in $(seq 0 0.1 0.5)
 do
   now=$(date +%m%d%y-%H%M%S)
-  logfile="logs/embed-droprate-$i-$now.txt"
+  logfile="logs/$dataset-embed-droprate-$i-$now.txt"
   echo "Logging output to $logfile"
 
   touch $logfile
