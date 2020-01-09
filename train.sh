@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 dataset="$1"
+dropout="$2"
 
 if [[ -z "$dataset" ]]; then
   echo "Usage: $0 <dataset>"
@@ -12,8 +13,17 @@ if [[ -z "$dataset" ]]; then
   exit
 fi
 
+if [[ -z "$dropout" ]]; then
+    echo "Using default embed dropout 0.0"
+    dropout="0.0"
+fi
+
 LR=0.001 # for all but reuters
 BATCH=32 # multi label, 64 for single
+BATCH=16
+
+wordsdim=1324
+embeddim=300
 
 if [[ "$dataset" == "Reuters" ]]; then
   # Multilabel, 90 classes
@@ -41,12 +51,12 @@ if [[ ! -d "logs" ]]; then
 fi
 
 now=$(date +%m%d%y-%H%M%S)
-logfile="logs/$now.txt"
+logfile="logs/$dataset-embed-droprate-$dropout-$now.txt"
 echo "Logging output to $logfile"
 
 touch $logfile
 
-pythoncmd="python -u -m models.reg_lstm --dataset $dataset --mode static --batch-size $BATCH --lr $LR --epochs 30 --bidirectional --num-layers 1 --hidden-dim 512 --wdrop 0.1 --embed-droprate 0.2 --dropout 0.5 --beta-ema 0.99 --seed 3435"
+pythoncmd="python -u -m models.reg_lstm --dataset $dataset --mode static --batch-size $BATCH --lr $LR --epochs 30 --bidirectional --num-layers 1 --hidden-dim 512 --wdrop 0.1 --embed-droprate $dropout --dropout 0.5 --beta-ema 0.99 --seed 3435 --words-dim $wordsdim --embed-dim $embeddim"
 
 $pythoncmd | tee "$logfile"
 

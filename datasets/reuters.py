@@ -10,6 +10,8 @@ from torchtext.data import NestedField, Field, TabularDataset
 from torchtext.data.iterator import BucketIterator
 from torchtext.vocab import Vectors
 
+from datasets.vocabs import VOCABS
+
 # csv.field_size_limit(sys.maxsize)
 # Circumvent "OverflowError: Python int too large to convert to C long" error on Windows Anaconda
 # https://stackoverflow.com/a/15063941/1713336
@@ -77,8 +79,8 @@ class Reuters(TabularDataset):
 
     @staticmethod
     def sort_key(ex):
-        return len(ex.text)
-
+        return len(ex.text
+)
     @classmethod
     def splits(cls, path, train=os.path.join('Reuters', 'train.tsv'),
                validation=os.path.join('Reuters', 'dev.tsv'),
@@ -106,6 +108,7 @@ class Reuters(TabularDataset):
 
         train, val, test = cls.splits(path)
         cls.TEXT_FIELD.build_vocab(train, val, test, vectors=vectors)
+        VOCABS.reuters = cls.TEXT_FIELD.vocab
         return BucketIterator.splits((train, val, test), batch_size=batch_size, repeat=False, shuffle=shuffle,
                                      sort_within_batch=True, device=device)
 

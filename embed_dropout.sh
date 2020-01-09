@@ -43,12 +43,7 @@ fi
 # Loop over various embedding dropouts
 for i in $(seq 0 0.1 0.5)
 do
-  now=$(date +%m%d%y-%H%M%S)
-  logfile="logs/$dataset-embed-droprate-$i-$now.txt"
-  echo "Logging output to $logfile"
-
-  touch $logfile
-
-  python -m models.reg_lstm --dataset "$dataset" --mode static --batch-size "$BATCH" --lr "$LR" --epochs 30 --bidirectional --num-layers 1 --hidden-dim 512 --wdrop 0.1 --embed-droprate "$i" --dropout 0.5 --beta-ema 0.99 --seed 3435 | tee "$logfile"
+  echo "Starting a new training run with a dropout of $i"
+  ./train.sh $dataset $i
 done
  

@@ -8,6 +8,7 @@ from torchtext.vocab import Vectors
 
 from datasets.reuters import clean_string, split_sents
 
+from datasets.vocabs import VOCABS
 
 def char_quantize(string, max_length=1000):
     identity = np.identity(len(AAPDCharQuantized.ALPHABET))
@@ -66,6 +67,8 @@ class AAPD(TabularDataset):
 
         train, val, test = cls.splits(path)
         cls.TEXT_FIELD.build_vocab(train, val, test, vectors=vectors)
+
+        VOCABS.aapd = cls.TEXT_FIELD.vocab
         return BucketIterator.splits((train, val, test), batch_size=batch_size, repeat=False, shuffle=shuffle,
                                      sort_within_batch=True, device=device)
 
