@@ -41,7 +41,7 @@ if [[ ! -d "logs" ]]; then
 fi
 
 # Loop over various embedding dropouts
-for i in $(seq 0 0.1 0.5)
+for i in $(seq 0.1 0.1 0.5)
 do
   echo "Starting a new training run with a dropout of $i"
   ./train.sh $dataset $i

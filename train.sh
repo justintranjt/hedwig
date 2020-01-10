@@ -20,10 +20,16 @@ fi
 
 LR=0.001 # for all but reuters
 BATCH=32 # multi label, 64 for single
-BATCH=16
 
-wordsdim=1324
+wordsdim=300
 embeddim=300
+
+mode=static
+mode="word-dropout"
+
+# if ELMO:
+#  BATCH=16
+#  wordsdim=1324
 
 if [[ "$dataset" == "Reuters" ]]; then
   # Multilabel, 90 classes
@@ -56,7 +62,7 @@ echo "Logging output to $logfile"
 
 touch $logfile
 
-pythoncmd="python -u -m models.reg_lstm --dataset $dataset --mode static --batch-size $BATCH --lr $LR --epochs 30 --bidirectional --num-layers 1 --hidden-dim 512 --wdrop 0.1 --embed-droprate $dropout --dropout 0.5 --beta-ema 0.99 --seed 3435 --words-dim $wordsdim --embed-dim $embeddim"
+pythoncmd="python -u -m models.reg_lstm --dataset $dataset --mode $mode --batch-size $BATCH --lr $LR --epochs 30 --bidirectional --num-layers 1 --hidden-dim 512 --wdrop 0.1 --embed-droprate $dropout --dropout 0.5 --beta-ema 0.99 --seed 3435 --words-dim $wordsdim --embed-dim $embeddim"
 
 $pythoncmd | tee "$logfile"
 

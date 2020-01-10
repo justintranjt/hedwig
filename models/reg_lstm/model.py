@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from models.reg_lstm.weight_drop import WeightDrop
-from models.reg_lstm.embed_regularize import embedded_dropout
+from models.reg_lstm.embed_regularize import embedded_dropout, embedded_dropout2
 
 from datasets.vocabs import VOCABS
 
@@ -15,6 +15,8 @@ from allennlp.modules.elmo import Elmo, batch_to_ids
 options_file = "https://allennlp.s3.amazonaws.com/models/elmo/2x4096_512_2048cnn_2xhighway/elmo_2x4096_512_2048cnn_2xhighway_options.json"
 weight_file = "https://allennlp.s3.amazonaws.com/models/elmo/2x4096_512_2048cnn_2xhighway/elmo_2x4096_512_2048cnn_2xhighway_weights.hdf5"
 
+
+USE_ELMO = False
 
 class RegLSTM(nn.Module):
 
@@ -41,7 +43,7 @@ class RegLSTM(nn.Module):
         if config.mode == 'rand':
             rand_embed_init = torch.Tensor(config.words_num, config.words_dim).uniform_(-0.25, 0.25)
             self.embed = nn.Embedding.from_pretrained(rand_embed_init, freeze=False)
-        elif config.mode == 'static':
+        elif config.mode == 'static' or config.mode == 'word-dropout':
             self.static_embed = nn.Embedding.from_pretrained(dataset.TEXT_FIELD.vocab.vectors, freeze=True)
         elif config.mode == 'non-static':
             self.non_static_embed = nn.Embedding.from_pretrained(dataset.TEXT_FIELD.vocab.vectors, freeze=False)
@@ -91,13 +93,23 @@ class RegLSTM(nn.Module):
         return embeddings
             
     def forward(self, x, lengths=None):
-        try:
-            elmo = self.xtoe(x)
-        except e:
-            print("rip")
+        if USE_ELMO:
+            try:
+                elmo = self.xtoe(x)
+            except:
+                print("rip")
 
-        reps = elmo['elmo_representations']
-        
+            reps = elmo['elmo_representations']
+            
+            # print(len(reps))
+            # print(reps[0].shape)
+            # print(x.shape)
+
+            x = torch.cat((x, reps[0]), dim=2)
+
+            # print(x.shape)
+
+            
         if self.mode == 'rand':
             x = embedded_dropout(self.embed, x, dropout=self.embed_droprate if self.training else 0) if self.embed_droprate else self.embed(x)
         elif self.mode == 'static':
@@ -106,17 +118,14 @@ class RegLSTM(nn.Module):
             x = embedded_dropout(self.non_static_embed, x, dropout=self.embed_droprate if self.training else 0) if self.embed_droprate else self.non_static_embed(x)
         elif self.mode == 'elmo':
             pass
+        elif self.mode == 'word-dropout':
+            # dropout entire word embeddings
+            #X = self.static_embed(x)
+            x = embedded_dropout2(self.static_embed, x, dropout=self.embed_droprate if self.training else 0) if self.embed_droprate else self.static_embed(x)
+            pass
         else:
             print("Unsupported Mode")
             exit()
-
-        # print(len(reps))
-        # print(reps[0].shape)
-        # print(x.shape)
-
-        x = torch.cat((x, reps[0]), dim=2)
-
-        # print(x.shape)
             
         if lengths is not None:
             x = torch.nn.utils.rnn.pack_padded_sequence(x, lengths, batch_first=True)

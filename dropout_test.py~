@@ -1,0 +1,12 @@
+import numpy as np
+import torch
+
+rnd = torch.rand((300+1024))
+print(rnd.shape, rnd)
+
+x = rnd.resize_((1324, 1)).bernoulli_(1-dropout)
+
+
+# mask = embed.weight.data.new().resize_((embed.weight.size(0), 1)).bernoulli_(1 - dropout).expand_as(embed.weight) / (1 - dropout)
+
+print(x)

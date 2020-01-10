@@ -1,0 +1,8 @@
+
+
+
+class Vocabs():
+
+    def __init__():
+        reuters = None
+        aapd = None

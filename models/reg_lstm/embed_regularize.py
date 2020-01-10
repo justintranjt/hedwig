@@ -33,10 +33,55 @@ import numpy as np
 
 import torch
 
+import os
+
 def embedded_dropout(embed, words, dropout=0.1, scale=None):
   if dropout:
     mask = embed.weight.data.new().resize_((embed.weight.size(0), 1)).bernoulli_(1 - dropout).expand_as(embed.weight) / (1 - dropout)
+    #print("embed:", embed)
+    #print("embed.weight:", embed.weight)
+    #print("embed.weight.data:", embed.weight.data)
+    #print("embed.weight.data.shape:", embed.weight.data.shape)
+    #print("mask", mask.shape, mask)
+    #print(fgf"{torch.sum(mask)}")
+    #exit()
     masked_embed_weight = mask * embed.weight
+  else:
+    masked_embed_weight = embed.weight
+  if scale:
+    masked_embed_weight = scale.expand_as(masked_embed_weight) * masked_embed_weight
+
+  padding_idx = embed.padding_idx
+  if padding_idx is None:
+      padding_idx = -1
+
+  X = torch.nn.functional.embedding(words, masked_embed_weight,
+    padding_idx, embed.max_norm, embed.norm_type,
+    embed.scale_grad_by_freq, embed.sparse
+  )
+  return X
+
+
+def embedded_dropout2(embed, words, dropout=0.1, scale=None):
+  if dropout:
+
+    a = torch.zeros(embed.weight.shape)
+    mask = a.bernoulli_(1-dropout) / (1-dropout)
+    #mask = embed.weight.data.new().bernoulli_(1-dropout) / (1-dropout)
+
+    #mask = embed.weight.data.new().resize_((embed.weight.size(0), 1)).bernoulli_(1 - dropout).expand_as(embed.weight) / (1 - dropout)
+
+    #print("embed:", embed)
+    #print("embed.weight:", embed.weight)
+    #print("embed.weight.data:", embed.weight.data)
+    #print("embed.weight.data.shape:", embed.weight.data.shape)
+    #print("mask", mask.shape, mask)
+    #print(fgf"{torch.sum(mask)}")
+    #exit()
+
+    masked_embed_weight = mask.cuda() * embed.weight
+
+    
   else:
     masked_embed_weight = embed.weight
   if scale:

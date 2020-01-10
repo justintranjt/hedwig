@@ -1,0 +1,13 @@
+Note: You are using GPU for training
+Dataset: Reuters
+No. of target classes: 90
+No. of train instances 5827
+No. of dev instances 1943
+No. of test instances 3019
+Applying weight drop of 0.1 to weight_hh_l0
+
+  Time Epoch Iteration Progress    (%Epoch)   Loss     Accuracy
+     0     1         1     1/365         0% 0.698015       0.0000
+    12     1        11    11/365         3% 0.055263       9.6591
+    29     1        21    21/365         6% 0.077113      16.6667
+    46     1        31    31/365         8% 0.028007      20.9677
