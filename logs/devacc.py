@@ -108,8 +108,8 @@ def main():
             plt.plot(data[y]["Epoch"], data[y][s], label=f"Dropout = {y}")
 
         plt.legend()
-        plt.xlabel(s)
-        plt.ylabel("Epoch")
+        plt.xlabel("Epoch")
+        plt.ylabel(s)
             
         if havedisp:
             plt.show()
